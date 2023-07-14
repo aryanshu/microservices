@@ -1,0 +1,54 @@
+spring:
+  main:
+    web-application-type:
+      reactive
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      routes:
+        - id: MESSAGING-SERVICE
+          uri: lb://MESSAGING-SERVICE
+          predicates:
+            - Path=/ws/**
+          filters:
+            - RemoveRequestHeader=Sec-WebSocket-Key
+            - RemoveRequestHeader=Sec-WebSocket-Version
+
+        - id: REGISTRATION-SERVICE
+          uri: lb://REGISTRATION-SERVICE
+          predicates:
+            - Path=/api/v1/registration/**, /api/v1/login/**, /api/v1/user/**
+          filters:
+            - AuthenticationFilter
+
+        - id: HANDLER-SVC
+          uri: lb://HANDLER-SVC
+          predicates:
+            - Path=/api/v1/profile**
+          filters:
+            - AuthenticationFilter
+
+        - id: FEED-ENGINE-SVC
+          uri: lb://FEED-ENGINE-SVC
+          predicates:
+            - Path=/api/v1/images**, /api/v1/swipe**, api/v1/recommendation**
+
+
+
+server:
+  port: 8090
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+    enabled: true
+
+
+
+
