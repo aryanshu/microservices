@@ -12,9 +12,9 @@ public class ReactiveWebfluxSecurityConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
             http.csrf(csrf -> csrf.disable());
-            http.authorizeExchange()
-                .pathMatchers("/ws/**").permitAll()
-                .anyExchange().authenticated();
+//            http.authorizeExchange()
+//                .pathMatchers("/ws/**").permitAll()
+//                .anyExchange().authenticated();
             return http.build();
     }
 

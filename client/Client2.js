@@ -2,7 +2,7 @@ const readline = require('readline');
 const SockJS = require('sockjs-client');
 const Stomp = require('stompjs');
 
-const socket = new SockJS('http://localhost:8088/ws');
+const socket = new SockJS('http://localhost:8090/ws');
 const stompClient = Stomp.over(socket);
 
 stompClient.connect(headers={"senderId":"2"}, function (frame) {
@@ -12,6 +12,10 @@ stompClient.connect(headers={"senderId":"2"}, function (frame) {
     input: process.stdin,
     output: process.stdout,
   });
+
+    stompClient.subscribe('/topic/2', function (response) {
+      console.log(response.body);
+    });
 
   rl.setPrompt('Enter your message (or type "exit" to quit): ');
   rl.prompt();
@@ -35,9 +39,7 @@ stompClient.connect(headers={"senderId":"2"}, function (frame) {
 
     stompClient.send('/app/chat.sendMessage', headers, JSON.stringify(message));
 
-    stompClient.subscribe('/topic/2', function (response) {
-      console.log(response.body);
-    });
+
 
     rl.prompt();
   });

@@ -25,14 +25,14 @@ spring:
         - id: HANDLER-SVC
           uri: lb://HANDLER-SVC
           predicates:
-            - Path=/api/v1/profile**
+            - Path=/api/v1/profile**, /api/v1/profile/userInterests/**
           filters:
             - AuthenticationFilter
 
         - id: FEED-ENGINE-SVC
           uri: lb://FEED-ENGINE-SVC
           predicates:
-            - Path=/api/v1/images**, /api/v1/swipe**, api/v1/recommendation**
+            - Path=/api/v1/images/**, /api/v1/swipe**, /api/v1/recommendation/**
 
 
 
